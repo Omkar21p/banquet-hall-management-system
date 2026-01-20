@@ -120,7 +120,7 @@ const AdminPackages = () => {
       name: pkg.name,
       name_mr: pkg.name_mr,
       rent: pkg.rent || '',
-      light_charges: pkg.light_charges || '',
+      custom_charges: pkg.custom_charges || [],
       description: pkg.description || '',
       description_mr: pkg.description_mr || '',
       catalogue_url: pkg.catalogue_url || '',
