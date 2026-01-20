@@ -53,7 +53,7 @@ const DateBookingPage = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get(`${API}/bookings?hall_id=${selectedHall}`);
+      const response = await axios.get(`${API}/public/bookings?hall_id=${selectedHall}`);
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
