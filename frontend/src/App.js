@@ -10,6 +10,7 @@ import PackagesPage from './pages/PackagesPage';
 import DateBookingPage from './pages/DateBookingPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import HallSettings from './pages/admin/HallSettings';
 import AdminServices from './pages/admin/AdminServices';
 import AdminPackages from './pages/admin/AdminPackages';
 import AdminCalendar from './pages/admin/AdminCalendar';
