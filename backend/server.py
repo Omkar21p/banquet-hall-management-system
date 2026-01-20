@@ -127,7 +127,7 @@ class Bill(BaseModel):
     services: List[dict] = []
     thali_items: List[dict] = []
     hall_rent: int
-    light_charges: int = 0
+    custom_charges: List[dict] = []
     discount: int = 0
     pre_booking_amount: int = 0
     total_amount: int
