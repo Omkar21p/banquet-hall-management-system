@@ -34,7 +34,8 @@ const AdminCalendar = () => {
     customer_city: '',
     customer_phone: '',
     event_type: 'लग्न',
-    num_guests: ''
+    num_guests: '',
+    booking_taken_by: ''
   });
 
   useEffect(() => {
