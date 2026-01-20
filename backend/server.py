@@ -355,6 +355,11 @@ async def update_bill(bill_id: str, bill: Bill, admin=Depends(get_current_admin)
     await db.bills.update_one({"id": bill_id}, {"$set": doc})
     return {"message": "Bill updated successfully"}
 
+@api_router.delete("/bills/{bill_id}")
+async def delete_bill(bill_id: str, admin=Depends(get_current_admin)):
+    await db.bills.delete_one({"id": bill_id})
+    return {"message": "Bill deleted successfully"}
+
 @api_router.get("/settings", response_model=Settings)
 async def get_settings():
     settings = await db.settings.find_one({"id": "settings"}, {"_id": 0})
