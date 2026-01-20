@@ -257,18 +257,72 @@ const AdminPackages = () => {
                     data-testid="package-rent-input"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">{t('Light Charges', 'लाईट चार्जेस')}</label>
-                  <input
-                    type="number"
-                    value={formData.light_charges}
-                    onChange={(e) => setFormData({ ...formData, light_charges: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg"
-                    data-testid="package-light-input"
-                  />
+              </div>
+              
+              <div className="space-y-4 border-t pt-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-bold maroon-text">{t('Custom Charges', 'कस्टम चार्जेस')}</h4>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({
+                      ...formData,
+                      custom_charges: [...formData.custom_charges, { label: '', label_mr: '', amount: 0 }]
+                    })}
+                    className="px-3 py-1 bg-[#D4AF37] text-white rounded-lg text-sm hover:bg-[#B8941F]"
+                  >
+                    + {t('Add Charge', 'चार्ज जोडा')}
+                  </button>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1">{t('Catalogue Image', 'कॅटलॉग इमेज')}</label>
+                {formData.custom_charges.map((charge, idx) => (
+                  <div key={idx} className="grid grid-cols-4 gap-2">
+                    <input
+                      type="text"
+                      placeholder={t('Label (English)', 'लेबल (इंग्रजी)')}
+                      value={charge.label}
+                      onChange={(e) => {
+                        const updated = [...formData.custom_charges];
+                        updated[idx] = { ...updated[idx], label: e.target.value };
+                        setFormData({ ...formData, custom_charges: updated });
+                      }}
+                      className="px-3 py-2 border rounded-lg"
+                    />
+                    <input
+                      type="text"
+                      placeholder={t('Label (Marathi)', 'लेबल (मराठी)')}
+                      value={charge.label_mr}
+                      onChange={(e) => {
+                        const updated = [...formData.custom_charges];
+                        updated[idx] = { ...updated[idx], label_mr: e.target.value };
+                        setFormData({ ...formData, custom_charges: updated });
+                      }}
+                      className="px-3 py-2 border rounded-lg marathi-text"
+                    />
+                    <input
+                      type="number"
+                      placeholder={t('Amount', 'रक्कम')}
+                      value={charge.amount}
+                      onChange={(e) => {
+                        const updated = [...formData.custom_charges];
+                        updated[idx] = { ...updated[idx], amount: parseInt(e.target.value) || 0 };
+                        setFormData({ ...formData, custom_charges: updated });
+                      }}
+                      className="px-3 py-2 border rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = formData.custom_charges.filter((_, i) => i !== idx);
+                        setFormData({ ...formData, custom_charges: updated });
+                      }}
+                      className="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      {t('Remove', 'काढा')}
+                    </button>
+                  </div>
+                ))}
+              </div>
+              
+              <div className=\"grid md:grid-cols-2 gap-4\">\n                <div className=\"md:col-span-2\">\n                  <label className=\"block text-sm font-semibold mb-1\">{t('Catalogue Image', 'कॅटलॉग इमेज')}</label>
                   <input
                     type="file"
                     accept="image/*"
