@@ -96,8 +96,7 @@ const AdminPackages = () => {
       const payload = {
         ...formData,
         hall_id: selectedHall,
-        rent: formData.rent ? parseInt(formData.rent) : null,
-        light_charges: formData.light_charges ? parseInt(formData.light_charges) : null
+        rent: formData.rent ? parseInt(formData.rent) : null
       };
 
       if (editingId) {
