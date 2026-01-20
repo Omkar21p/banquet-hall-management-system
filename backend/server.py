@@ -59,6 +59,7 @@ class Hall(BaseModel):
     approx_rent: int
     location: str
     image_url: str
+    logo: Optional[str] = None
     description: Optional[str] = None
     description_mr: Optional[str] = None
 
