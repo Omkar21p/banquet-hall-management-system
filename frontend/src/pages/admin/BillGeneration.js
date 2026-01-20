@@ -254,14 +254,14 @@ const BillGeneration = () => {
                 <td className="border p-2 text-right">₹{parseInt(billData.hall_rent || 0).toLocaleString()}</td>
                 <td className="border p-2 text-right">₹{parseInt(billData.hall_rent || 0).toLocaleString()}</td>
               </tr>
-              {parseInt(billData.light_charges) > 0 && (
-                <tr>
-                  <td className="border p-2">{t_bill('Light Charges', 'लाईट चार्जेस')}</td>
+              {billData.custom_charges.map((charge, idx) => (
+                <tr key={idx}>
+                  <td className="border p-2">{lang === 'en' ? charge.label : charge.label_mr}</td>
                   <td className="border p-2 text-right">1</td>
-                  <td className="border p-2 text-right">₹{parseInt(billData.light_charges).toLocaleString()}</td>
-                  <td className="border p-2 text-right">₹{parseInt(billData.light_charges).toLocaleString()}</td>
+                  <td className="border p-2 text-right">₹{charge.amount.toLocaleString()}</td>
+                  <td className="border p-2 text-right">₹{charge.amount.toLocaleString()}</td>
                 </tr>
-              )}
+              ))}
               {billData.services.map((service) => (
                 <tr key={service.id}>
                   <td className="border p-2">{lang === 'en' ? service.name : service.name_mr}</td>
