@@ -269,16 +269,90 @@ const AdminPackages = () => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1">{t('Catalogue URL', 'कॅटलॉग URL')}</label>
+                  <label className="block text-sm font-semibold mb-1">{t('Catalogue Image', 'कॅटलॉग इमेज')}</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="w-full px-4 py-2 border rounded-lg"
+                    data-testid="package-image-upload"
+                  />
+                  {formData.catalogue_image && (
+                    <div className="mt-2">
+                      <img src={formData.catalogue_image} alt="Catalogue" className="h-32 object-cover rounded-lg" />
+                    </div>
+                  )}
+                  <p className="text-sm text-gray-600 mt-1">{t('Or provide URL:', 'किंवा URL द्या:')}</p>
                   <input
                     type="text"
                     value={formData.catalogue_url}
-                    onChange={(e) => setFormData({ ...formData, catalogue_url: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg"
+                    onChange={(e) => setFormData({ ...formData, catalogue_url: e.target.value, catalogue_image: '' })}
+                    className="w-full px-4 py-2 border rounded-lg mt-1"
+                    placeholder="https://..."
                     data-testid="package-catalogue-input"
                   />
                 </div>
               </div>
+              
+              {formData.package_type === 'thali' && (
+                <div className="space-y-4 border-t pt-4">
+                  <h4 className="font-bold maroon-text">{t('Custom Field Names (Optional)', 'कस्टम फील्ड नावे (ऐच्छिक)')}</h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">{t('Rent Label (English)', 'भाडे लेबल (इंग्रजी)')}</label>
+                      <input
+                        type="text"
+                        value={formData.custom_fields.rent_label}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          custom_fields: { ...formData.custom_fields, rent_label: e.target.value }
+                        })}
+                        className="w-full px-4 py-2 border rounded-lg"
+                        placeholder="Rent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">{t('Rent Label (Marathi)', 'भाडे लेबल (मराठी)')}</label>
+                      <input
+                        type="text"
+                        value={formData.custom_fields.rent_label_mr}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          custom_fields: { ...formData.custom_fields, rent_label_mr: e.target.value }
+                        })}
+                        className="w-full px-4 py-2 border rounded-lg marathi-text"
+                        placeholder="भाडे"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">{t('Light Charges Label (English)', 'लाईट चार्जेस लेबल (इंग्रजी)')}</label>
+                      <input
+                        type="text"
+                        value={formData.custom_fields.light_label}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          custom_fields: { ...formData.custom_fields, light_label: e.target.value }
+                        })}
+                        className="w-full px-4 py-2 border rounded-lg"
+                        placeholder="Light Charges"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold mb-1">{t('Light Charges Label (Marathi)', 'लाईट चार्जेस लेबल (मराठी)')}</label>
+                      <input
+                        type="text"
+                        value={formData.custom_fields.light_label_mr}
+                        onChange={(e) => setFormData({ 
+                          ...formData, 
+                          custom_fields: { ...formData.custom_fields, light_label_mr: e.target.value }
+                        })}
+                        className="w-full px-4 py-2 border rounded-lg marathi-text"
+                        placeholder="लाईट चार्जेस"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <button
                 type="submit"
                 className="flex items-center gap-2 px-6 py-2 bg-[#800000] text-white rounded-full hover:bg-[#600000]"
