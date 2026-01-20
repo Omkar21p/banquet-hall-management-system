@@ -223,6 +223,14 @@ const OlderBookings = () => {
                               <Share2 size={18} />
                             </button>
                           )}
+                          <button
+                            onClick={() => handleDeleteBill(bill.id)}
+                            className="p-2 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
+                            title={t('Delete Bill', 'बिल डिलीट करा')}
+                            data-testid={`delete-bill-${bill.id}`}
+                          >
+                            <Trash2 size={18} />
+                          </button>
                         </div>
                       </td>
                     </tr>
