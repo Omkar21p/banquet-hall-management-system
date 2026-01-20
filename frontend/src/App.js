@@ -38,6 +38,7 @@ function App() {
             <Route path="/admin/calendar" element={<AdminCalendar />} />
             <Route path="/admin/bills/new" element={<BillGeneration />} />
             <Route path="/admin/bills" element={<OlderBookings />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
           </Routes>
           <Toaster position="top-right" />
