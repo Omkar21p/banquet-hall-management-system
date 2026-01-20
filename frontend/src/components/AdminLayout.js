@@ -12,7 +12,8 @@ import {
   Settings,
   LogOut,
   Globe,
-  Users
+  Users,
+  Building2
 } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
