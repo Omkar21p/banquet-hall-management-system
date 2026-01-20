@@ -16,6 +16,7 @@ import AdminCalendar from './pages/admin/AdminCalendar';
 import BillGeneration from './pages/admin/BillGeneration';
 import OlderBookings from './pages/admin/OlderBookings';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminUsers from './pages/admin/AdminUsers';
 
 import './App.css';
 
