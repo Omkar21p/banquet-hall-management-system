@@ -306,6 +306,12 @@ async def get_bookings(hall_id: Optional[str] = None, admin=Depends(get_current_
             booking['booking_date'] = datetime.fromisoformat(booking['booking_date'])
     return bookings
 
+@api_router.get("/public/bookings")
+async def get_public_bookings(hall_id: Optional[str] = None):
+    query = {"hall_id": hall_id, "status": "booked"} if hall_id else {"status": "booked"}
+    bookings = await db.bookings.find(query, {"_id": 0, "customer_phone": 0}).to_list(1000)
+    return bookings
+
 @api_router.post("/bookings", response_model=Booking)
 async def create_booking(booking: Booking, admin=Depends(get_current_admin)):
     doc = booking.model_dump()
