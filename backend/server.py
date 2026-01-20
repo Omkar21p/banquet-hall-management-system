@@ -361,6 +361,17 @@ async def update_settings(settings: Settings, admin=Depends(get_current_admin)):
     await db.settings.update_one({"id": "settings"}, {"$set": settings.model_dump()}, upsert=True)
     return {"message": "Settings updated successfully"}
 
+@api_router.post("/upload-image")
+async def upload_image(file: UploadFile = File(...), admin=Depends(get_current_admin)):
+    try:
+        contents = await file.read()
+        base64_image = base64.b64encode(contents).decode('utf-8')
+        file_extension = file.filename.split('.')[-1]
+        image_data = f"data:image/{file_extension};base64,{base64_image}"
+        return {"image_data": image_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading image: {str(e)}")
+
 app.include_router(api_router)
 
 app.add_middleware(
