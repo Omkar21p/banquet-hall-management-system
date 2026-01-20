@@ -72,6 +72,18 @@ const OlderBookings = () => {
     toast.success(t('WhatsApp opened!', 'WhatsApp उघडले!'));
   };
 
+  const handleDeleteBill = async (billId) => {
+    if (!window.confirm(t('Delete this bill? This action cannot be undone.', 'हे बिल डिलीट करायचे? ही क्रिया पूर्ववत करता येणार नाही.'))) return;
+
+    try {
+      await axios.delete(`${API}/bills/${billId}`, getAuthHeaders());
+      toast.success(t('Bill deleted!', 'बिल डिलीट झाले!'));
+      fetchBills();
+    } catch (error) {
+      toast.error(t('Error deleting bill', 'बिल डिलीट करताना एरर'));
+    }
+  };
+
   const handleExportPDF = () => {
     const doc = new jsPDF();
     
