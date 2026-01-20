@@ -26,7 +26,14 @@ const AdminPackages = () => {
     description: '',
     description_mr: '',
     catalogue_url: '',
-    items: []
+    catalogue_image: '',
+    items: [],
+    custom_fields: {
+      rent_label: 'Rent',
+      rent_label_mr: 'भाडे',
+      light_label: 'Light Charges',
+      light_label_mr: 'लाईट चार्जेस'
+    }
   });
 
   useEffect(() => {
