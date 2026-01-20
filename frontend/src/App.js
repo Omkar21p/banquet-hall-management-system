@@ -34,6 +34,7 @@ function App() {
             
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/halls" element={<HallSettings />} />
             <Route path="/admin/services" element={<AdminServices />} />
             <Route path="/admin/packages" element={<AdminPackages />} />
             <Route path="/admin/calendar" element={<AdminCalendar />} />
