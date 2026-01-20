@@ -108,6 +108,7 @@ class Booking(BaseModel):
     customer_phone: str
     event_type: str
     num_guests: int
+    booking_taken_by: Optional[str] = None
     booking_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "booked"
 
