@@ -31,7 +31,7 @@ const BillGeneration = () => {
     services: [],
     thali_items: [],
     hall_rent: '',
-    light_charges: '0',
+    custom_charges: [],
     discount: '0',
     pre_booking_amount: '0',
     total_amount: 0,
