@@ -146,7 +146,8 @@ const AdminCalendar = () => {
       customer_city: booking.customer_city,
       customer_phone: booking.customer_phone,
       event_type: booking.event_type,
-      num_guests: booking.num_guests.toString()
+      num_guests: booking.num_guests.toString(),
+      booking_taken_by: booking.booking_taken_by || ''
     });
     setEditingBooking(booking.id);
     setShowAddBooking(true);
