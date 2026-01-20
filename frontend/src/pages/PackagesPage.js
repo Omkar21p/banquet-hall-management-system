@@ -115,10 +115,16 @@ const PackagesPage = () => {
                     </div>
                   )}
 
-                  {pkg.light_charges && (
-                    <div className="flex items-center gap-2 mb-4">
-                      <IndianRupee className="text-[#800000]" size={20} />
-                      <span className="font-bold">{t('Light Charges:', 'लाईट चार्जेस:')} ₹{pkg.light_charges.toLocaleString()}</span>
+                  {pkg.custom_charges && pkg.custom_charges.length > 0 && (
+                    <div className="space-y-2 mb-4">
+                      {pkg.custom_charges.map((charge, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <IndianRupee className="text-[#800000]" size={20} />
+                          <span className="font-bold">
+                            {language === 'en' ? charge.label : charge.label_mr}: ₹{charge.amount.toLocaleString()}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   )}
 
