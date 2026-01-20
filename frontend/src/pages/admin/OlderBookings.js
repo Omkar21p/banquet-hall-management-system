@@ -279,14 +279,14 @@ const OlderBookings = () => {
                       <td className="border p-2 text-right">₹{selectedBill.hall_rent.toLocaleString()}</td>
                       <td className="border p-2 text-right">₹{selectedBill.hall_rent.toLocaleString()}</td>
                     </tr>
-                    {selectedBill.light_charges > 0 && (
-                      <tr>
-                        <td className="border p-2">{t('Light Charges', 'लाईट चार्जेस')}</td>
+                    {selectedBill.custom_charges && selectedBill.custom_charges.length > 0 && selectedBill.custom_charges.map((charge, idx) => (
+                      <tr key={`charge-${idx}`}>
+                        <td className="border p-2">{language === 'en' ? charge.label : charge.label_mr}</td>
                         <td className="border p-2 text-right">1</td>
-                        <td className="border p-2 text-right">₹{selectedBill.light_charges.toLocaleString()}</td>
-                        <td className="border p-2 text-right">₹{selectedBill.light_charges.toLocaleString()}</td>
+                        <td className="border p-2 text-right">₹{charge.amount.toLocaleString()}</td>
+                        <td className="border p-2 text-right">₹{charge.amount.toLocaleString()}</td>
                       </tr>
-                    )}
+                    ))}
                     {selectedBill.services.map((service, idx) => (
                       <tr key={idx}>
                         <td className="border p-2">{language === 'en' ? service.name : service.name_mr}</td>
