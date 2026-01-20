@@ -465,7 +465,9 @@ const BillGeneration = () => {
               ))}
             </div>
 
-            <div className="mt-6 grid md:grid-cols-3 gap-4">\n              <div>\n                <label className=\"block text-sm font-semibold mb-2\">{t('Discount', 'सूट')}</label>
+            <div className="mt-6 grid md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2">{t('Discount', 'सूट')}</label>
                 <input
                   type="number"
                   value={billData.discount}
