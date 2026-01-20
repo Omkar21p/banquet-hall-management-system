@@ -363,6 +363,17 @@ const AdminCalendar = () => {
                   data-testid="num-guests-input"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-semibold mb-1">{t('Booking Taken By', 'बुकिंग घेतले')}</label>
+                <input
+                  type="text"
+                  value={bookingForm.booking_taken_by}
+                  onChange={(e) => setBookingForm({ ...bookingForm, booking_taken_by: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder={t('Admin name', 'प्रशासक नाव')}
+                  data-testid="booking-taken-by-input"
+                />
+              </div>
               <div className="md:col-span-2 flex gap-2">
                 <button
                   type="submit"
