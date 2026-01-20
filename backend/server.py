@@ -113,7 +113,7 @@ class Booking(BaseModel):
 class Bill(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    booking_id: str
+    booking_id: Optional[str] = None
     hall_id: str
     hall_name: str
     customer_name: str
