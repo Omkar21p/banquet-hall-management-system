@@ -3,7 +3,7 @@ import AdminLayout from '../../components/AdminLayout';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import axios from 'axios';
-import { Eye, Share2, FileDown, Search } from 'lucide-react';
+import { Eye, Share2, FileDown, Search, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
