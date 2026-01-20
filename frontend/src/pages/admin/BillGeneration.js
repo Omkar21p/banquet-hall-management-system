@@ -35,7 +35,9 @@ const BillGeneration = () => {
     discount: '0',
     pre_booking_amount: '0',
     total_amount: 0,
-    balance_due: 0
+    balance_due: 0,
+    manual_total: false,
+    manual_balance: false
   });
 
   useEffect(() => {
