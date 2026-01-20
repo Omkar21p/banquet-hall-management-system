@@ -58,7 +58,7 @@ const BillGeneration = () => {
     billData.services,
     billData.thali_items,
     billData.hall_rent,
-    billData.light_charges,
+    billData.custom_charges,
     billData.discount,
     billData.pre_booking_amount
   ]);
