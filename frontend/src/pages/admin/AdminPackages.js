@@ -150,6 +150,27 @@ const AdminPackages = () => {
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', file);
+
+    try {
+      const response = await axios.post(`${API}/upload-image`, formDataUpload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...getAuthHeaders().headers
+        }
+      });
+      setFormData({ ...formData, catalogue_image: response.data.image_data, catalogue_url: '' });
+      toast.success(t('Image uploaded!', 'इमेज अपलोड झाली!'));
+    } catch (error) {
+      toast.error(t('Error uploading image', 'इमेज अपलोड करताना एरर'));
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6">
