@@ -83,7 +83,7 @@ class Package(BaseModel):
     name_mr: str
     items: List[dict] = []
     rent: Optional[int] = None
-    light_charges: Optional[int] = None
+    custom_charges: List[dict] = []
     catalogue_url: Optional[str] = None
     catalogue_image: Optional[str] = None
     description: Optional[str] = None
