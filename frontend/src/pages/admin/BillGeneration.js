@@ -90,12 +90,15 @@ const BillGeneration = () => {
       (sum, t) => sum + (t.rate * t.quantity),
       0
     );
+    const customChargesTotal = billData.custom_charges.reduce(
+      (sum, c) => sum + (c.amount || 0),
+      0
+    );
     const hallRent = parseInt(billData.hall_rent) || 0;
-    const lightCharges = parseInt(billData.light_charges) || 0;
     const discount = parseInt(billData.discount) || 0;
     const preBooking = parseInt(billData.pre_booking_amount) || 0;
 
-    const total = servicesTotal + thaliTotal + hallRent + lightCharges - discount;
+    const total = servicesTotal + thaliTotal + hallRent + customChargesTotal - discount;
     const balance = total - preBooking;
 
     setBillData(prev => ({
