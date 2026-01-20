@@ -29,6 +29,7 @@ const AdminLayout = ({ children }) => {
 
   const menuItems = [
     { path: '/admin/dashboard', icon: LayoutDashboard, label: t('Dashboard', 'डॅशबोर्ड') },
+    { path: '/admin/halls', icon: Building2, label: t('Hall Settings', 'हॉल सेटिंग्ज') },
     { path: '/admin/services', icon: Briefcase, label: t('Services', 'सेवा') },
     { path: '/admin/packages', icon: Package, label: t('Packages', 'पॅकेजेस') },
     { path: '/admin/calendar', icon: Calendar, label: t('Calendar', 'कॅलेंडर') },
