@@ -430,7 +430,15 @@ const AdminPackages = () => {
                 </span>
               </div>
               {pkg.rent && <p className="text-gray-700">{t('Rent:', 'भाडे:')} ₹{pkg.rent.toLocaleString()}</p>}
-              {pkg.light_charges && <p className="text-gray-700">{t('Light:', 'लाईट:')} ₹{pkg.light_charges.toLocaleString()}</p>}
+              {pkg.custom_charges && pkg.custom_charges.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  {pkg.custom_charges.map((charge, idx) => (
+                    <p key={idx} className="text-gray-700">
+                      {language === 'en' ? charge.label : charge.label_mr}: ₹{charge.amount.toLocaleString()}
+                    </p>
+                  ))}
+                </div>
+              )}
               {pkg.catalogue_url && (
                 <a href={pkg.catalogue_url} target="_blank" rel="noopener noreferrer" className="text-[#D4AF37] text-sm">
                   {t('View Catalogue', 'कॅटलॉग पहा')}
