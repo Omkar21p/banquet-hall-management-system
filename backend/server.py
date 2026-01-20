@@ -83,8 +83,10 @@ class Package(BaseModel):
     rent: Optional[int] = None
     light_charges: Optional[int] = None
     catalogue_url: Optional[str] = None
+    catalogue_image: Optional[str] = None
     description: Optional[str] = None
     description_mr: Optional[str] = None
+    custom_fields: Optional[dict] = {}
 
 class ShubhDate(BaseModel):
     model_config = ConfigDict(extra="ignore")
