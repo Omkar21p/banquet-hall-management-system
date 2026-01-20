@@ -322,7 +322,9 @@ const AdminPackages = () => {
                 ))}
               </div>
               
-              <div className=\"grid md:grid-cols-2 gap-4\">\n                <div className=\"md:col-span-2\">\n                  <label className=\"block text-sm font-semibold mb-1\">{t('Catalogue Image', 'कॅटलॉग इमेज')}</label>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold mb-1">{t('Catalogue Image', 'कॅटलॉग इमेज')}</label>
                   <input
                     type="file"
                     accept="image/*"
