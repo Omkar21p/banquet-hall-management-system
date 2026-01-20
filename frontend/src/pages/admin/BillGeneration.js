@@ -84,6 +84,9 @@ const BillGeneration = () => {
   };
 
   const calculateTotal = () => {
+    // Skip auto calculation if manual override is enabled
+    if (billData.manual_total && billData.manual_balance) return;
+    
     const servicesTotal = billData.services.reduce(
       (sum, s) => sum + (s.price * s.quantity),
       0
@@ -93,7 +96,7 @@ const BillGeneration = () => {
       0
     );
     const customChargesTotal = billData.custom_charges.reduce(
-      (sum, c) => sum + (c.amount || 0),
+      (sum, c) => sum + (parseInt(c.amount) || 0),
       0
     );
     const hallRent = parseInt(billData.hall_rent) || 0;
@@ -105,8 +108,8 @@ const BillGeneration = () => {
 
     setBillData(prev => ({
       ...prev,
-      total_amount: total,
-      balance_due: balance
+      total_amount: billData.manual_total ? prev.total_amount : total,
+      balance_due: billData.manual_balance ? prev.balance_due : balance
     }));
   };
 
