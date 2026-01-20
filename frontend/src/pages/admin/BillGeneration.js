@@ -206,11 +206,18 @@ const BillGeneration = () => {
   const BillPreview = () => {
     const lang = billLanguage;
     const t_bill = (en, mr) => (lang === 'en' ? en : mr);
+    
+    const selectedHallData = halls.find(h => h.id === billData.hall_id);
 
     return (
       <div ref={billPreviewRef} className="bg-white p-8 rounded-xl shadow-lg" data-testid="bill-preview">
         <div className="border-4 border-[#800000] p-6">
           <div className="text-center mb-6">
+            {selectedHallData?.logo && (
+              <div className="flex justify-center mb-3">
+                <img src={selectedHallData.logo} alt="Hall Logo" className="h-20 object-contain" />
+              </div>
+            )}
             <h1 className="playfair text-3xl font-bold maroon-text">{billData.hall_name}</h1>
             <p className="text-lg mt-2">{t_bill('Invoice', 'बिल')}</p>
           </div>
