@@ -193,6 +193,33 @@ async def change_password(change_pwd: ChangePassword, admin=Depends(get_current_
     await db.admins.update_one({"id": admin["id"]}, {"$set": {"password_hash": new_hash}})
     return {"message": "Password changed successfully"}
 
+@api_router.get("/admins", response_model=List[AdminResponse])
+async def get_admins(admin=Depends(get_current_admin)):
+    admins = await db.admins.find({}, {"_id": 0, "password_hash": 0}).to_list(100)
+    return admins
+
+@api_router.post("/admins")
+async def create_admin(admin_data: dict, admin=Depends(get_current_admin)):
+    existing = await db.admins.find_one({"username": admin_data["username"]})
+    if existing:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    
+    new_admin = Admin(
+        username=admin_data["username"],
+        password_hash=hash_password(admin_data["password"]),
+        hall_name=admin_data["hall_name"]
+    )
+    await db.admins.insert_one(new_admin.model_dump())
+    return {"message": "Admin created successfully", "id": new_admin.id}
+
+@api_router.delete("/admins/{admin_id}")
+async def delete_admin(admin_id: str, admin=Depends(get_current_admin)):
+    if admin_id == admin["id"]:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
+    await db.admins.delete_one({"id": admin_id})
+    return {"message": "Admin deleted successfully"}
+
 @api_router.get("/halls", response_model=List[Hall])
 async def get_halls():
     halls = await db.halls.find({}, {"_id": 0}).to_list(100)
