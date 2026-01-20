@@ -22,7 +22,7 @@ const AdminPackages = () => {
     name: '',
     name_mr: '',
     rent: '',
-    light_charges: '',
+    custom_charges: [],
     description: '',
     description_mr: '',
     catalogue_url: '',
