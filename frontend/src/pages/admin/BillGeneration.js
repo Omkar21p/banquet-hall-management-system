@@ -400,18 +400,72 @@ const BillGeneration = () => {
                   data-testid="hall-rent-input"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">{t('Light Charges', 'लाईट चार्जेस')}</label>
-                <input
-                  type="number"
-                  value={billData.light_charges}
-                  onChange={(e) => setBillData({ ...billData, light_charges: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg"
-                  data-testid="light-charges-input"
-                />
+            </div>
+
+            <div className="mt-6 space-y-4 border-t pt-4">
+              <div className="flex justify-between items-center">
+                <h3 className="playfair text-xl font-bold maroon-text">{t('Custom Charges', 'कस्टम चार्जेस')}</h3>
+                <button
+                  type="button"
+                  onClick={() => setBillData({
+                    ...billData,
+                    custom_charges: [...billData.custom_charges, { label: '', label_mr: '', amount: 0 }]
+                  })}
+                  className="px-4 py-2 bg-[#D4AF37] text-white rounded-lg hover:bg-[#B8941F]"
+                >
+                  + {t('Add Charge', 'चार्ज जोडा')}
+                </button>
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-2">{t('Discount', 'सूट')}</label>
+              {billData.custom_charges.map((charge, idx) => (
+                <div key={idx} className="grid grid-cols-4 gap-2">
+                  <input
+                    type="text"
+                    placeholder={t('Label (English)', 'लेबल (इंग्रजी)')}
+                    value={charge.label}
+                    onChange={(e) => {
+                      const updated = [...billData.custom_charges];
+                      updated[idx] = { ...updated[idx], label: e.target.value };
+                      setBillData({ ...billData, custom_charges: updated });
+                    }}
+                    className="px-3 py-2 border rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    placeholder={t('Label (Marathi)', 'लेबल (मराठी)')}
+                    value={charge.label_mr}
+                    onChange={(e) => {
+                      const updated = [...billData.custom_charges];
+                      updated[idx] = { ...updated[idx], label_mr: e.target.value };
+                      setBillData({ ...billData, custom_charges: updated });
+                    }}
+                    className="px-3 py-2 border rounded-lg marathi-text"
+                  />
+                  <input
+                    type="number"
+                    placeholder={t('Amount', 'रक्कम')}
+                    value={charge.amount}
+                    onChange={(e) => {
+                      const updated = [...billData.custom_charges];
+                      updated[idx] = { ...updated[idx], amount: parseInt(e.target.value) || 0 };
+                      setBillData({ ...billData, custom_charges: updated });
+                    }}
+                    className="px-3 py-2 border rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = billData.custom_charges.filter((_, i) => i !== idx);
+                      setBillData({ ...billData, custom_charges: updated });
+                    }}
+                    className="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  >
+                    {t('Remove', 'काढा')}
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 grid md:grid-cols-3 gap-4">\n              <div>\n                <label className=\"block text-sm font-semibold mb-2\">{t('Discount', 'सूट')}</label>
                 <input
                   type="number"
                   value={billData.discount}
