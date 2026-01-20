@@ -11,7 +11,8 @@ import {
   FolderOpen,
   Settings,
   LogOut,
-  Globe
+  Globe,
+  Users
 } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
