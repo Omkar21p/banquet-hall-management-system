@@ -32,6 +32,7 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/calendar', icon: Calendar, label: t('Calendar', 'कॅलेंडर') },
     { path: '/admin/bills/new', icon: FileText, label: t('New Bill', 'नविन बिल') },
     { path: '/admin/bills', icon: FolderOpen, label: t('Older Bookings', 'जुनी बुकिंग') },
+    { path: '/admin/users', icon: Users, label: t('Manage Admins', 'प्रशासक व्यवस्थापन') },
     { path: '/admin/settings', icon: Settings, label: t('Settings', 'सेटिंग्ज') },
   ];
 
