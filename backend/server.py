@@ -129,6 +129,8 @@ class Bill(BaseModel):
     event_type: str
     services: List[dict] = []
     thali_items: List[dict] = []
+    thali_price_per_plate: int = 0
+    thali_total_plates: int = 0
     hall_rent: int
     custom_charges: List[dict] = []
     discount: int = 0
