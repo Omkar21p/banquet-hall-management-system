@@ -256,7 +256,9 @@ async def get_hall(hall_id: str):
 
 @api_router.put("/halls/{hall_id}")
 async def update_hall(hall_id: str, hall: Hall, admin=Depends(get_current_admin)):
-    await db.halls.update_one({"id": hall_id}, {"$set": hall.model_dump()})
+    doc = hall.model_dump()
+    doc['id'] = hall_id
+    await db.halls.update_one({"id": hall_id}, {"$set": doc})
     # Also update hall_name on all admins linked to this hall
     await db.admins.update_many(
         {"hall_id": hall_id},
@@ -277,7 +279,9 @@ async def create_service(service: Service, admin=Depends(get_current_admin)):
 
 @api_router.put("/services/{service_id}")
 async def update_service(service_id: str, service: Service, admin=Depends(get_current_admin)):
-    await db.services.update_one({"id": service_id}, {"$set": service.model_dump()})
+    doc = service.model_dump()
+    doc['id'] = service_id
+    await db.services.update_one({"id": service_id}, {"$set": doc})
     return {"message": "Service updated successfully"}
 
 @api_router.delete("/services/{service_id}")
@@ -298,7 +302,9 @@ async def create_package(package: Package, admin=Depends(get_current_admin)):
 
 @api_router.put("/packages/{package_id}")
 async def update_package(package_id: str, package: Package, admin=Depends(get_current_admin)):
-    await db.packages.update_one({"id": package_id}, {"$set": package.model_dump()})
+    doc = package.model_dump()
+    doc['id'] = package_id
+    await db.packages.update_one({"id": package_id}, {"$set": doc})
     return {"message": "Package updated successfully"}
 
 @api_router.delete("/packages/{package_id}")
@@ -347,6 +353,7 @@ async def create_booking(booking: Booking, admin=Depends(get_current_admin)):
 @api_router.put("/bookings/{booking_id}")
 async def update_booking(booking_id: str, booking: Booking, admin=Depends(get_current_admin)):
     doc = booking.model_dump()
+    doc['id'] = booking_id
     doc['booking_date'] = doc['booking_date'].isoformat()
     await db.bookings.update_one({"id": booking_id}, {"$set": doc})
     return {"message": "Booking updated successfully"}
@@ -375,6 +382,7 @@ async def create_bill(bill: Bill, admin=Depends(get_current_admin)):
 @api_router.put("/bills/{bill_id}")
 async def update_bill(bill_id: str, bill: Bill, admin=Depends(get_current_admin)):
     doc = bill.model_dump()
+    doc['id'] = bill_id
     doc['created_at'] = doc['created_at'].isoformat()
     await db.bills.update_one({"id": bill_id}, {"$set": doc})
     return {"message": "Bill updated successfully"}
@@ -404,6 +412,18 @@ async def reset_system(admin=Depends(get_current_admin)):
     await db.bookings.delete_many({})
     await db.bills.delete_many({})
     return {"message": "System reset successfully"}
+
+@api_router.get("/system-repair-halls")
+async def system_repair_halls():
+    # Emergency fix endpoint to restore overwritten hall IDs
+    admins = await db.admins.find({}, {"_id": 0}).to_list(100)
+    for adm in admins:
+        h_id = adm.get("hall_id")
+        h_name = adm.get("hall_name")
+        if h_id and h_name:
+            # We want to re-adopt any hall that currently has this exact name back to its original UUID
+            await db.halls.update_one({"name": h_name}, {"$set": {"id": h_id}})
+    return {"message": "System data links repaired"}
 
 @api_router.post("/upload-image")
 async def upload_image(file: UploadFile = File(...), admin=Depends(get_current_admin)):
