@@ -415,15 +415,33 @@ async def reset_system(admin=Depends(get_current_admin)):
 
 @api_router.get("/system-repair-halls")
 async def system_repair_halls():
-    # Emergency fix endpoint to restore overwritten hall IDs
+    # Emergency fix: Map existing halls back to original admin hall_ids.
     admins = await db.admins.find({}, {"_id": 0}).to_list(100)
+    halls = await db.halls.find({}, {"_id": 0}).to_list(100)
+    
+    # We will try to map by matching 'om' / 'shiv' in either the admin username OR the admin hall_name!
     for adm in admins:
         h_id = adm.get("hall_id")
-        h_name = adm.get("hall_name")
-        if h_id and h_name:
-            # We want to re-adopt any hall that currently has this exact name back to its original UUID
-            await db.halls.update_one({"name": h_name}, {"$set": {"id": h_id}})
-    return {"message": "System data links repaired"}
+        h_name = adm.get("hall_name", "").lower()
+        if not h_id:
+            continue
+            
+        is_om = "om" in adm["username"].lower() or "om" in h_name
+        is_shiv = "shiv" in adm["username"].lower() or "shiv" in h_name
+        
+        target_hall = None
+        if is_om:
+            target_hall = next((h for h in halls if "om" in h["name"].lower()), None)
+        elif is_shiv:
+            target_hall = next((h for h in halls if "shiv" in h["name"].lower()), None)
+            
+        if target_hall:
+            await db.halls.update_one(
+                {"name": target_hall["name"]}, 
+                {"$set": {"id": h_id}}
+            )
+            
+    return {"message": "Advanced system data links repaired"}
 
 @api_router.post("/upload-image")
 async def upload_image(file: UploadFile = File(...), admin=Depends(get_current_admin)):
