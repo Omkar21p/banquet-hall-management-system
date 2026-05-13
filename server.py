@@ -36,6 +36,8 @@ class Admin(BaseModel):
     password_hash: str
     hall_name: str
     hall_id: Optional[str] = None
+    role: str = "admin" # super_admin, admin, booking_staff
+    permissions: List[str] = [] # e.g., ["view_bookings", "create_bookings", "view_bills"]
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class AdminLogin(BaseModel):
@@ -48,6 +50,8 @@ class AdminResponse(BaseModel):
     username: str
     hall_name: str
     hall_id: Optional[str] = None
+    role: str = "admin"
+    permissions: List[str] = []
     created_at: Optional[datetime] = None
 
 class ChangePassword(BaseModel):
@@ -193,7 +197,9 @@ async def login(admin_login: AdminLogin):
             "id": admin["id"],
             "username": admin["username"],
             "hall_name": admin["hall_name"],
-            "hall_id": admin.get("hall_id", "")
+            "hall_id": admin.get("hall_id", ""),
+            "role": admin.get("role", "admin"),
+            "permissions": admin.get("permissions", [])
         }
     }
 
@@ -229,10 +235,26 @@ async def create_admin(admin_data: dict, admin=Depends(get_current_admin)):
         username=admin_data["username"],
         password_hash=hash_password(admin_data["password"]),
         hall_name=hall_name,
-        hall_id=hall_id
+        hall_id=hall_id,
+        role=admin_data.get("role", "admin"),
+        permissions=admin_data.get("permissions", [])
     )
     await db.admins.insert_one(new_admin.model_dump())
     return {"message": "Admin created successfully", "id": new_admin.id}
+
+@api_router.put("/admins/{admin_id}")
+async def update_admin_role(admin_id: str, data: dict, admin=Depends(get_current_admin)):
+    if admin.get("role") != "super_admin":
+        raise HTTPException(status_code=403, detail="Only super admins can manage permissions")
+    
+    await db.admins.update_one(
+        {"id": admin_id},
+        {"$set": {
+            "role": data.get("role"),
+            "permissions": data.get("permissions", [])
+        }}
+    )
+    return {"message": "Admin updated successfully"}
 
 @api_router.delete("/admins/{admin_id}")
 async def delete_admin(admin_id: str, admin=Depends(get_current_admin)):
@@ -479,10 +501,12 @@ async def startup_event():
             username="om_admin",
             password_hash=hash_password("om123"),
             hall_name=om_hall["name"] if om_hall else "Om Lawns Banquet Hall",
-            hall_id=om_hall["id"] if om_hall else ""
+            hall_id=om_hall["id"] if om_hall else "",
+            role="super_admin",
+            permissions=["*"]
         )
         await db.admins.insert_one(admin1.model_dump())
-        logger.info("Created default admin: om_admin / om123")
+        logger.info("Created default super admin: om_admin / om123")
     
     if not admin2_exists:
         admin2 = Admin(
