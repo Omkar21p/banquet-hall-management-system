@@ -621,6 +621,14 @@ async def startup_event():
         )
         await db.admins.insert_one(admin1.model_dump())
         logger.info("Created default super admin: om_admin / om123")
+    else:
+        # Migration: ensure om_admin always has super_admin role
+        if admin1_exists.get("role") != "super_admin":
+            await db.admins.update_one(
+                {"username": "om_admin"},
+                {"$set": {"role": "super_admin", "permissions": ["*"], "allowed_services": ["*"]}}
+            )
+            logger.info("Migrated om_admin to super_admin role")
     
     if not admin2_exists:
         admin2 = Admin(
