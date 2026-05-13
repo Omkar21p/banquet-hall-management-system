@@ -478,6 +478,69 @@ async def reset_system(admin=Depends(get_current_admin)):
     await db.bills.delete_many({})
     return {"message": "System reset successfully"}
 
+@api_router.post("/data/export")
+async def export_data(data: dict, admin=Depends(get_current_admin)):
+    """Export bookings and bills for a date range. Super admin only."""
+    require_role(admin, ["super_admin"])
+    from_date = data.get("from_date", "")
+    to_date = data.get("to_date", "")
+    
+    # Build query for bookings (uses 'date' field as string YYYY-MM-DD)
+    booking_query = {}
+    bill_query = {}
+    if from_date and to_date:
+        booking_query["date"] = {"$gte": from_date, "$lte": to_date}
+        bill_query["event_date"] = {"$gte": from_date, "$lte": to_date}
+    elif from_date:
+        booking_query["date"] = {"$gte": from_date}
+        bill_query["event_date"] = {"$gte": from_date}
+    elif to_date:
+        booking_query["date"] = {"$lte": to_date}
+        bill_query["event_date"] = {"$lte": to_date}
+    
+    bookings = await db.bookings.find(booking_query, {"_id": 0}).to_list(10000)
+    bills = await db.bills.find(bill_query, {"_id": 0}).to_list(10000)
+    
+    # Convert datetime objects to string for JSON serialization
+    for b in bookings:
+        if isinstance(b.get('booking_date'), datetime):
+            b['booking_date'] = b['booking_date'].isoformat()
+    for b in bills:
+        if isinstance(b.get('created_at'), datetime):
+            b['created_at'] = b['created_at'].isoformat()
+    
+    return {
+        "bookings": bookings,
+        "bills": bills,
+        "count": {"bookings": len(bookings), "bills": len(bills)},
+        "range": {"from": from_date, "to": to_date}
+    }
+
+@api_router.post("/data/purge")
+async def purge_data(data: dict, admin=Depends(get_current_admin)):
+    """Permanently delete bookings and bills for a date range. Super admin only."""
+    require_role(admin, ["super_admin"])
+    from_date = data.get("from_date", "")
+    to_date = data.get("to_date", "")
+    
+    if not from_date or not to_date:
+        raise HTTPException(status_code=400, detail="Both from_date and to_date are required")
+    
+    booking_query = {"date": {"$gte": from_date, "$lte": to_date}}
+    bill_query = {"event_date": {"$gte": from_date, "$lte": to_date}}
+    
+    booking_result = await db.bookings.delete_many(booking_query)
+    bill_result = await db.bills.delete_many(bill_query)
+    
+    return {
+        "message": "Data purged successfully",
+        "deleted": {
+            "bookings": booking_result.deleted_count,
+            "bills": bill_result.deleted_count
+        },
+        "range": {"from": from_date, "to": to_date}
+    }
+
 @api_router.post("/upload-image")
 async def upload_image(file: UploadFile = File(...), admin=Depends(get_current_admin)):
     try:
